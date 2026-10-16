@@ -49,6 +49,8 @@ hosts do not satisfy all of them.
 
 The table describes common adapters, not permanent product guarantees. Prefer the capabilities and continuation semantics actually exposed in the current session. An absent table entry is not proof of absence; perform bounded discovery before falling back through Section 6.
 
+For Codex, apply the explicit chat-creation authorization rule in [../SKILL.md](../SKILL.md) before dispatch. An explicit request for automatic creation already selects that surface; do not ask again merely because the request spans several stages. Discover the operations in the current catalog as described in [runtime-recovery.md](runtime-recovery.md), including namespaced and deferred tools. `collaboration.spawn_agent` creates an internal subagent, not a user-visible Codex chat, and cannot satisfy a requested `create_thread` outcome. Tool availability does not itself grant permission.
+
 ## 4. Two Return Models
 
 The protocol requires that a dispatched attempt always has a live return path and that the
@@ -157,7 +159,7 @@ of around the block.
 
 Before classifying an expected capability as unavailable, follow [runtime-recovery.md](runtime-recovery.md) for bounded discovery and read-only diagnosis. Preserve the user-selected surface and distinguish a capability absent on this host from a previously available capability with a connection failure. Do not turn a temporary discovery gap into a permanent manual-return arrangement.
 
-After that diagnosis, resolve in this order, and state the result before dispatching material work:
+After that diagnosis, check creation separately from return: without `spawn_durable_worker`, none of the return alternatives below can create a durable worker. Preserve the requested surface and report the creation capability gap. When creation is available, resolve the return path in this order, and state the result before dispatching material work:
 
 1. `await_return` available: use it. This is the default for a durable worker.
 2. `await_return` unavailable, `worker_push` verified: instruct the worker to push, but only

@@ -1,4 +1,4 @@
 interface:
   display_name: "Multi-Thread Coordinator"
   short_description: "Coordinate complex work across traceable workers"
-  default_prompt: "Use $multi-thread-coordinator to decompose this complex work, recommend internal or user-visible worker tasks before dispatch, and verify each accepted result."
+  default_prompt: "Use $multi-thread-coordinator to decompose this work, automatically create the necessary new user-visible chats for this run, coordinate their results, and verify each deliverable."

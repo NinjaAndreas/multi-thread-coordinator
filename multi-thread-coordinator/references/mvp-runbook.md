@@ -129,7 +129,7 @@ Assign one accountable worker per task. The current task remains the coordinator
 - Recommend a user-visible task for material, multi-stage, long-running, likely-to-be-reworked, or later-resumable work where durable traceability helps.
 - Recommend an isolated worktree-backed task when concurrent mutable code changes require it and the user authorizes that environment.
 
-If the current user request already selects the surfaces, use that selection. Otherwise ask one consolidated question covering the recommended mix before material dispatch. Simple helper work may use internal subagents without a pause. If the selected surface is unavailable, revise the recommendation, narrow the work, or provide a manual handoff; do not silently move material production into the coordinator.
+Apply the chat-creation authorization rule in [../SKILL.md](../SKILL.md). If the user already selected the surfaces or explicitly requested automatic chat creation for this run, use that authorization without another question. Otherwise ask one consolidated question only for the missing surface choice or creation authorization. Simple helper work may use internal subagents without a pause when delegation is authorized. If the selected surface appears unavailable, first follow [runtime-recovery.md](runtime-recovery.md); do not silently move material production into the coordinator or substitute an internal helper for a requested visible chat.
 
 ## 5. Build the Worker Brief
 
@@ -202,7 +202,7 @@ Reject summaries that do not identify the actual candidate or let the coordinato
 
 ## 8. Recommend Worker Surfaces
 
-After decomposition, show the user only the decision-relevant packages and one recommended mix:
+After decomposition, show the user only the decision-relevant packages and one recommended mix. Include the question below only when creation authorization or the surface choice is still missing:
 
 ```text
 Recommended worker surfaces:
@@ -211,7 +211,7 @@ Recommended worker surfaces:
 Question: Use this recommended mix, or change any named package to the other surface?
 ```
 
-Use a still-applicable surface choice from the conversation without asking again. Ask once only for material packages that lack a choice, unless later requirements create a materially different work package. One user answer authorizes the named user-visible tasks for that run. Do not ask about every stage in a continuing chain; reuse its selected worker. Do not ask for small helpers when an internal subagent is plainly sufficient.
+Use a still-applicable surface choice or explicit automatic-creation request from the conversation without asking again. One explicit request can authorize the necessary chats within the stated run scope, even before individual packages are named. Ask once only for a genuinely missing choice or creation authorization. Do not ask about every stage in a continuing chain; reuse its selected worker. Do not ask for small helpers when delegation is authorized and an internal subagent is plainly sufficient.
 
 ## 9. Coordinate Independent Parallel Cases
 
@@ -270,7 +270,9 @@ Before treating the basic coordination MVP as usable, verify both probes against
 
 - Material work is not silently assigned to the coordinator or defaulted to internal subagents.
 - The recommendation distinguishes durable traceable work from short helper work.
-- One consolidated question covers all material packages lacking a user choice.
+- Explicit automatic chat-creation requests proceed after tool and return-path preflight without a repeated permission question; requests merely to edit this skill create no chats.
+- One consolidated question covers only packages with genuinely missing surface choice or creation authorization.
+- Missing creation and missing return capabilities are diagnosed separately after deferred-tool discovery; internal subagents never count as user-visible chats.
 - A selected continuing worker is reused across a dependent staged chain.
 - A user-visible task defaults to the host's event contract—`task_event` where the coordinator waits in-turn, `notify` where the host wakes it—records the created worker identity such as `threadId` and `hostId`, and is returned through that contract rather than by polling.
 - A task-event attempt is not `running` before its ready worker identity and first wait contract exist, and a notify attempt is not `running` before its ready worker identity and `return_armed_at` exist.

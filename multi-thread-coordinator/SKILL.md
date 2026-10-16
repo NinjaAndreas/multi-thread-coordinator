@@ -7,6 +7,14 @@ description: Coordinate complex single-task or multi-item agent work by binding 
 
 Coordinate the user's work while keeping authority, permissions, evidence, and active work explicit. Reduce coordination burden without creating a second project workflow.
 
+## Chat Creation: Authorization and Availability
+
+When the user explicitly asks to create new chats or to create the necessary chats automatically for a coordination run, that selects the user-visible surface for the requested scope. Discover the native tools, announce the ready packages, and create them without asking the same permission again. Reuse that authorization across stages and recovery while its scope remains applicable. For example, “自动创建需要的新线程来完成这项工作” is an explicit creation request; merely mentioning this skill, asking to repair it, or requesting parallel work is not.
+
+Respect the host's thread-creation rules. On Codex, user-visible chats require an explicit user request; ordinary delegated subtasks use internal subagents when authorized. This skill's recommendation or presence in context is not itself permission to create a chat. The suggested invocation in `agents/openai.yaml` becomes a user request only when the user actually submits it.
+
+Authorization and tool availability are separate checks. Before claiming that creation is unavailable, discover `create_thread` and the required return/continuation capabilities through the current catalog, including deferred tools; follow [references/runtime-recovery.md](references/runtime-recovery.md). A Markdown edit cannot expose a missing native tool. Distinguish an instruction fix from an actually verified successful chat creation.
+
 ## Load the Needed References
 
 - Read [references/mvp-runbook.md](references/mvp-runbook.md) for every request that requires active coordination rather than a single contained action. Use its compact plan, brief, dispatch, reconciliation, and status-report shapes.
@@ -85,7 +93,7 @@ Do not silently default material work to internal subagents. After decomposition
 - recommend a user-visible durable task for a material or multi-stage chain when traceability, direct inspection, later continuation, recovery, or likely rework makes a durable task useful. Weigh how durable that surface actually is on the current host and what a fresh worker costs; where workers are scoped to the session, do not recommend one on the promise of continuation later;
 - recommend an authorized worktree-backed task when concurrent mutable code changes require checkout isolation.
 
-If the user already chose the surfaces in this conversation and that choice still applies, follow it. Retain existing scope-specific authorization, including implementation, PR creation, or merge when granted; a stage transition or tool recovery does not reset it. Otherwise present the recommended mix and ask one consolidated question before dispatching material work. Small helper work may use an internal subagent without pausing. Creating user-visible tasks requires the user's selection or authorization; one answer may authorize all named tasks in the current run.
+Apply the authorization rule above before asking about surfaces. If the user already selected a surface or explicitly requested automatic creation for this run, follow that choice and dispatch ready work after preflight without another confirmation. Retain existing scope-specific authorization, including implementation, PR creation, or merge when granted; a stage transition or tool recovery does not reset it. Only when the needed surface choice or creation authorization is genuinely missing, present the recommended mix and ask one consolidated question. Small helper work may use an internal subagent without pausing when delegation is authorized. One explicit request may authorize all necessary user-visible tasks within the run's stated scope; it does not authorize unrelated work.
 
 The current task remains the coordinator: it may inspect authority, run acceptance checks, reconcile evidence, and route rework, but it must not silently become the primary producer for material deliverables. Keep a dependent chain with the same selected worker where practical. If the selected surface appears unavailable, first use [runtime recovery](references/runtime-recovery.md). Preserve the requested visible task; a helper is not a substitute for that deliverable. If bounded diagnosis cannot restore the surface, report the observed blocker and ask only for a genuinely necessary changed choice, without repeating an already answered authorization question.
 
